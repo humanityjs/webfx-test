@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "browserslist": [
+    "ie > 8",
+    "last 2 versions"
+  ],
+  "scripts": {
+    "dev": "poi --serve",
+    "build": "poi --prod"
+  },
+  "devDependencies": {
+    "@poi/plugin-typescript": "^12.0.0",
+    "node-sass": "^4.14.1",
+    "poi": "^12.2.2",
+    "react-hot-loader": "^4.6.3",
+    "sass-loader": "^9.0.3",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-router-dom": "^5.1.5",
+    "autoprefixer": "^9.8.6",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^5.2.0"
+  }
+}
