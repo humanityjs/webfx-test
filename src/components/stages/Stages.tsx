@@ -11,6 +11,7 @@ import { todoData, IListData } from './mocks';
 import Column from './components/Column';
 
 import './stages.scss';
+import { useAppState } from '../../context/app.context';
 
 export default function Stages() {
   const [todo, setTodo] = React.useState<IListData[]>(todoData);
@@ -20,6 +21,22 @@ export default function Stages() {
   const [multiSourceId, setSourceId] = React.useState('');
   const [isMoving, setMoving] = React.useState(false);
   const [dragId, setDragId] = React.useState('');
+
+  const { filters } = useAppState();
+
+  const filterFn = (item: IListData) => {
+    return filters.includes(item.tag);
+  };
+
+  let filteredTodo = todo;
+  let filteredInProgress = inProgress;
+  let filteredDone = done;
+
+  if (filters.length) {
+    filteredTodo = todo.filter(filterFn);
+    filteredInProgress = inProgress.filter(filterFn);
+    filteredDone = done.filter(filterFn);
+  }
 
   const onMultiSelect = (selectedId: string, sourceId: string) => {
     if (sourceId !== multiSourceId) {
@@ -44,9 +61,9 @@ export default function Stages() {
   };
 
   const stateMapping = {
-    [ids.todo]: todo,
-    [ids['in-progress']]: inProgress,
-    [ids.done]: done,
+    [ids.todo]: filteredTodo,
+    [ids['in-progress']]: filteredInProgress,
+    [ids.done]: filteredDone,
   };
 
   const setters = {
@@ -149,7 +166,7 @@ export default function Stages() {
               width={width}
               layout="horizontal"
               itemData={{
-                data: [todo, inProgress, done],
+                data: [filteredTodo, filteredInProgress, filteredDone],
                 ids: Object.values(ids),
                 onMultiSelect,
                 selected,
