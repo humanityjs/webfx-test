@@ -1,0 +1,79 @@
+.stages {
+  height: calc(100vh - 55.75px);
+
+  .column {
+    border-right: thin solid #eef0f1;
+    padding: 0 0.5em;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    .list-container {
+      padding: 0.5em 2em;
+    }
+    .column-header {
+      padding: 0.5em 2em;
+      background-color: #fff;
+      .count {
+        display: inline-block;
+        padding: 0.1em 0.5em;
+        border-radius: 0.3em;
+        color: #5b5b5b;
+        margin-right: 10px;
+        font-size: 14px;
+        border: thin solid #fff;
+      }
+
+      .title {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #454444;
+      }
+    }
+
+    .card {
+      padding: 1em;
+      margin: 1em 0;
+
+      .card-title {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 0px;
+        color: #3f3939;
+      }
+
+      .description {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #3f3939;
+      }
+
+      .tag {
+        padding: 0.3em 0;
+        display: flex;
+        align-items: center;
+        .icon {
+          display: inline-block;
+          margin-right: 0.45em;
+          font-size: 16px;
+          color: #b2b6b2;
+        }
+
+        .tag-value {
+          font-weight: normal;
+          font-size: 14px;
+          color: #3f3939;
+        }
+      }
+
+      .date {
+        border-top: thin solid #f2f2f2;
+        padding-bottom: 0;
+      }
+    }
+  }
+}
