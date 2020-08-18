@@ -5,6 +5,7 @@ import {
   DragDropContext,
   DraggableLocation,
   DropResult,
+  DragStart,
 } from 'react-beautiful-dnd';
 import { todoData, IListData } from './mocks';
 import Column from './components/Column';
@@ -15,6 +16,26 @@ export default function Stages() {
   const [todo, setTodo] = React.useState<IListData[]>(todoData);
   const [inProgress, setInProgress] = React.useState<IListData[]>([]);
   const [done, setDone] = React.useState<IListData[]>([]);
+  const [selected, setSelected] = React.useState<string[]>([]);
+  const [multiSourceId, setSourceId] = React.useState('');
+  const [isMoving, setMoving] = React.useState(false);
+  const [dragId, setDragId] = React.useState('');
+
+  const onMultiSelect = (selectedId: string, sourceId: string) => {
+    if (sourceId !== multiSourceId) {
+      setSelected([selectedId]);
+      return setSourceId(sourceId);
+    }
+    const cloned = Array.from(selected);
+    const index = cloned.findIndex((item) => item === selectedId);
+
+    if (index >= 0) {
+      cloned.splice(index, 1);
+    } else {
+      cloned.push(selectedId);
+    }
+    setSelected(cloned);
+  };
 
   const ids = {
     todo: 'todo',
@@ -36,8 +57,16 @@ export default function Stages() {
 
   const reorder = (list: IListData[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+    const selectedIds = Array.from(selected);
+
+    if (!selectedIds.includes(result[startIndex].id)) {
+      selectedIds.push(result[startIndex].id);
+    }
+    for (const item of selectedIds) {
+      const itemIndex = result.findIndex((a) => a.id === item);
+      const [removed] = result.splice(itemIndex, 1);
+      result.splice(endIndex, 0, removed);
+    }
 
     return result;
   };
@@ -50,9 +79,18 @@ export default function Stages() {
   ) => {
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
 
-    destClone.splice(droppableDestination.index, 0, removed);
+    const selectedIds = Array.from(selected);
+
+    if (!selectedIds.includes(sourceClone[droppableSource.index].id)) {
+      selectedIds.push(sourceClone[droppableSource.index].id);
+    }
+
+    for (const item of selectedIds) {
+      const itemIndex = sourceClone.findIndex((a) => a.id === item);
+      const [removed] = sourceClone.splice(itemIndex, 1);
+      destClone.splice(droppableDestination.index, 0, removed);
+    }
 
     const result: { [key: string]: IListData[] } = {};
     result[droppableSource.droppableId] = sourceClone;
@@ -60,7 +98,17 @@ export default function Stages() {
 
     return result;
   };
+
+  const onDragStart = (start: DragStart) => {
+    if (!selected.includes(start.draggableId)) {
+      setSelected([]);
+    }
+    setDragId(start.draggableId);
+    setMoving(true);
+  };
+
   const onDragEnd = (result: DropResult) => {
+    setMoving(false);
     const { source, destination } = result;
 
     if (!destination) {
@@ -85,13 +133,14 @@ export default function Stages() {
 
       setters[source.droppableId](res[source.droppableId]);
       setters[destination.droppableId](res[destination.droppableId]);
+      setSelected([]);
     }
   };
   return (
     <div className="stages">
       <AutoSizer>
         {({ height, width }) => (
-          <DragDropContext onDragEnd={onDragEnd}>
+          <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <List
               className="List"
               height={height}
@@ -102,6 +151,10 @@ export default function Stages() {
               itemData={{
                 data: [todo, inProgress, done],
                 ids: Object.values(ids),
+                onMultiSelect,
+                selected,
+                isMoving,
+                dragId,
               }}
             >
               {Column}
