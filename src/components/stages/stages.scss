@@ -1,9 +1,19 @@
 .stages {
-  height: calc(100vh - 55.75px);
+  min-height: calc(100vh - 55.75px);
+
+  .List {
+    min-height: 100% !important;
+
+    & > div {
+      min-height: 100% !important;
+      height: auto !important;
+    }
+  }
 
   .column {
     border-right: thin solid #eef0f1;
     padding: 0 0.5em;
+    min-height: 100% !important;
 
     &:last-of-type {
       border-right: none;
@@ -73,6 +83,13 @@
       .date {
         border-top: thin solid #f2f2f2;
         padding-bottom: 0;
+      }
+
+      &.selected {
+        background-color: lightblue;
+        &.moving {
+          background-color: rgb(235, 235, 228);
+        }
       }
     }
   }
