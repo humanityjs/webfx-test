@@ -48,6 +48,12 @@ const Filter = () => {
 
 export default function Header() {
   const [showFilter, toggleFilter] = React.useState(false);
+  const { searchString } = useAppState();
+  const dispatch = useAppDispatch();
+  const onChange = (event: any) => {
+    const value = event?.target?.value;
+    dispatch({ type: actionType.SET_SEARCH, data: value });
+  };
   return (
     <div className="container-fluid header">
       <div className="row flex">
@@ -59,8 +65,19 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <div className="col-md-3">
+        <div className="col-md-4">
           <div className="flex">
+            <div className="item-cont">
+              <div className="item input">
+                <span className="material-icons icon">search</span>
+                <input
+                  value={searchString}
+                  onChange={onChange}
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
             <div className="item-cont">
               <button
                 onClick={() => toggleFilter(!showFilter)}
@@ -70,12 +87,6 @@ export default function Header() {
                 <span>Filter</span>
               </button>
               {showFilter && <Filter />}
-            </div>
-            <div className="item-cont">
-              <button className="item">
-                <span className="material-icons icon">search</span>
-                <span>Search</span>
-              </button>
             </div>
           </div>
         </div>
