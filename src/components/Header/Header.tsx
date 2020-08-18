@@ -68,6 +68,16 @@ export default function Header() {
         <div className="col-md-4">
           <div className="flex">
             <div className="item-cont">
+              <button
+                onClick={() => toggleFilter(!showFilter)}
+                className="item"
+              >
+                <span className="material-icons icon">filter_list</span>
+                <span>Filter</span>
+              </button>
+              {showFilter && <Filter />}
+            </div>
+            <div className="item-cont">
               <div className="item input">
                 <span className="material-icons icon">search</span>
                 <input
@@ -77,16 +87,6 @@ export default function Header() {
                   placeholder="Search"
                 />
               </div>
-            </div>
-            <div className="item-cont">
-              <button
-                onClick={() => toggleFilter(!showFilter)}
-                className="item"
-              >
-                <span className="material-icons icon">filter_list</span>
-                <span>Filter</span>
-              </button>
-              {showFilter && <Filter />}
             </div>
           </div>
         </div>
