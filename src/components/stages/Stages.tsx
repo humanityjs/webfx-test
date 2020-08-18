@@ -22,10 +22,14 @@ export default function Stages() {
   const [isMoving, setMoving] = React.useState(false);
   const [dragId, setDragId] = React.useState('');
 
-  const { filters } = useAppState();
+  const { filters, searchString } = useAppState();
 
   const filterFn = (item: IListData) => {
     return filters.includes(item.tag);
+  };
+
+  const searchFilterFn = (item: IListData) => {
+    return item.title.toLowerCase().includes(searchString.toLowerCase());
   };
 
   let filteredTodo = todo;
@@ -36,6 +40,12 @@ export default function Stages() {
     filteredTodo = todo.filter(filterFn);
     filteredInProgress = inProgress.filter(filterFn);
     filteredDone = done.filter(filterFn);
+  }
+
+  if (searchString) {
+    filteredTodo = filteredTodo.filter(searchFilterFn);
+    filteredInProgress = filteredInProgress.filter(searchFilterFn);
+    filteredDone = filteredDone.filter(searchFilterFn);
   }
 
   const onMultiSelect = (selectedId: string, sourceId: string) => {
@@ -61,9 +71,9 @@ export default function Stages() {
   };
 
   const stateMapping = {
-    [ids.todo]: filteredTodo,
-    [ids['in-progress']]: filteredInProgress,
-    [ids.done]: filteredDone,
+    [ids.todo]: todo,
+    [ids['in-progress']]: inProgress,
+    [ids.done]: done,
   };
 
   const setters = {

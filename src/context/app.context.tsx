@@ -2,6 +2,7 @@ import * as React from 'react';
 
 interface IState {
   filters: string[];
+  searchString: string;
 }
 
 interface IActionCreator {
@@ -16,15 +17,18 @@ type IReducer = (state: IState, action: IActionCreator) => IState;
 interface IActionType {
   ADD_FILTER: string;
   REMOVE_FILTER: string;
+  SET_SEARCH: string;
 }
 
 const initialState: IState = {
   filters: [],
+  searchString: '',
 };
 
 export const actionType: IActionType = {
   ADD_FILTER: 'ADD_FILTER',
   REMOVE_FILTER: 'REMOVE_FILTER',
+  SET_SEARCH: 'SET_SEARCH',
 };
 
 const reducer: IReducer = (state, action) => {
@@ -49,6 +53,11 @@ const reducer: IReducer = (state, action) => {
         filters: cloned,
       };
     }
+    case actionType.SET_SEARCH:
+      return {
+        ...state,
+        searchString: action.data,
+      };
     default:
       return state;
   }
