@@ -3,14 +3,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { columnNames, IListData, colors } from '../mocks';
 import Card from './Card';
 
-const grid = 8;
-
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-  ...draggableStyle,
-  userSelect: 'none',
-  background: isDragging ? 'lightgreen' : 'grey',
-});
-
 const getListStyle = (isDraggingOver: any, index: number) => ({
   background: isDraggingOver ? colors[index] : '#fff',
   width: '100%',
@@ -47,10 +39,6 @@ const Column = ({
                     ref={prov.innerRef}
                     {...prov.draggableProps}
                     {...prov.dragHandleProps}
-                    // style={getItemStyle(
-                    //   snap.isDragging,
-                    //   prov.draggableProps.style
-                    // )}
                   >
                     <Card {...item} />
                   </div>

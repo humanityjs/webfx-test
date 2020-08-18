@@ -35,7 +35,6 @@ export default function Stages() {
   };
 
   const reorder = (list: IListData[], startIndex: number, endIndex: number) => {
-    console.log(list);
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
